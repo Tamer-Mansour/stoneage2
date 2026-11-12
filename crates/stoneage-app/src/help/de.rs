@@ -265,19 +265,19 @@ Der Bereich Meldungen zeigt das Programmprotokoll. „Debug“ aktiviert ausfüh
         title: "Über StoneAge",
         body: r#"
 StoneAge 2 – Version {app_version}.
-Originalgetreue Neuimplementierung von StoneAge {version} (K-S Analysis) mit moderner Oberfläche.
+Unabhängige Neuimplementierung von StoneAge {version} mit moderner Oberfläche. Keine Verbindung zum Hersteller der ursprünglichen Software.
 
 - Originalversion: {version}
 - Dateiformat (.saf): {format}
 - Oszilloskop: Velleman PCSGU250 (USB), über PCSGU250.dll
 - Sprachen: Deutsch, Englisch, Türkisch
 
-(c) 2001-2009 K-S Analysis, netz-meister.
+StoneAge 2 (c) 2026 Tamer Mansour.
 "#,
     },
     Topic {
         id: "license",
         title: "Lizenz",
-        body: "Lizenzvereinbarung des Originalprogramms:",
+        body: "",
     },
 ];

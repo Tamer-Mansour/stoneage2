@@ -72,12 +72,16 @@ jobs:
             Copy-Item crates/stoneage-app/assets/icons/NOTICE-tlp-icons.md "$dir/licenses"
           }
           Compress-Archive -Path "$dir/*" -DestinationPath "dist/$name.zip" -CompressionLevel Optimal
+          # Plain exe for direct download (the updater uses the zip).
+          Copy-Item "target/${{ matrix.target }}/release/stoneage.exe" "dist/StoneAge2-${{ matrix.arch }}.exe"
           Get-ChildItem dist
 
       - uses: actions/upload-artifact@v4
         with:
           name: package-${{ matrix.arch }}
-          path: dist/stoneage-windows-${{ matrix.arch }}.zip
+          path: |
+            dist/stoneage-windows-${{ matrix.arch }}.zip
+            dist/StoneAge2-${{ matrix.arch }}.exe
           if-no-files-found: error
 
   release:
@@ -107,6 +111,8 @@ jobs:
           files: |
             dist/stoneage-windows-x86.zip
             dist/stoneage-windows-x64.zip
+            dist/StoneAge2-x86.exe
+            dist/StoneAge2-x64.exe
             dist/SHA256SUMS.txt
           # Tags like v2.1.0-beta.1 become pre-releases (only offered with "Include pre-releases").
           prerelease: ${{ contains(github.ref_name, '-') }}

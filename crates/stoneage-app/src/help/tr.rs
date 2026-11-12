@@ -265,19 +265,19 @@ Mesajlar bölümü program günlüğünü gösterir. Ayrıntılı çıktı için
         title: "StoneAge hakkında",
         body: r#"
 StoneAge 2 – sürüm {app_version}.
-StoneAge {version} (K-S Analysis) programının modern arayüzlü, aslına sadık yeniden uygulaması.
+StoneAge {version} programının modern arayüzlü, bağımsız yeniden uygulaması. Orijinal yazılımın üreticisiyle bağlantılı değildir.
 
 - Orijinal sürüm: {version}
 - Dosya biçimi (.saf): {format}
 - Osiloskop: Velleman PCSGU250 (USB), PCSGU250.dll üzerinden
 - Diller: Almanca, İngilizce, Türkçe
 
-(c) 2001-2009 K-S Analysis, netz-meister.
+StoneAge 2 (c) 2026 Tamer Mansour.
 "#,
     },
     Topic {
         id: "license",
         title: "Lisans",
-        body: "Orijinal programın lisans sözleşmesi (Almanca):",
+        body: "",
     },
 ];

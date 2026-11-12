@@ -265,19 +265,19 @@ The Messages section shows the program log. Enable "Debug" for detailed output a
         title: "About StoneAge",
         body: r#"
 StoneAge 2 – version {app_version}.
-Faithful re-implementation of StoneAge {version} (K-S Analysis) with a modern user interface.
+Independent re-implementation of StoneAge {version} with a modern user interface. Not affiliated with or endorsed by the maker of the original software.
 
 - Original version: {version}
 - File format (.saf): {format}
 - Oscilloscope: Velleman PCSGU250 (USB), via PCSGU250.dll
 - Languages: German, English, Turkish
 
-(c) 2001-2009 K-S Analysis, netz-meister.
+StoneAge 2 (c) 2026 Tamer Mansour.
 "#,
     },
     Topic {
         id: "license",
         title: "License",
-        body: "License agreement of the original program (German):",
+        body: "",
     },
 ];

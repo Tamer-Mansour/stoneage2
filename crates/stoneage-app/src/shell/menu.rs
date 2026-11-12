@@ -180,6 +180,6 @@ fn help_menu(ui: &mut egui::Ui, st: &mut AppState) {
         item_sc(ui, st, "App.Menu.Help.Contents", "Help center", &sc::HELP, Command::ShowSection(SidebarSection::Help));
         item_txt(ui, st, "MainFrame.Tabs.Msg.Caption", "Messages", "T", Command::ShowSection(SidebarSection::Messages));
         ui.separator();
-        ui.label(egui::RichText::new(format!("StoneAge 2 · K-S Analysis {}", stoneage_core::ORIGINAL_VERSION)).weak().small());
+        ui.label(egui::RichText::new(format!("StoneAge 2 · v{}", env!("CARGO_PKG_VERSION"))).weak().small());
     });
 }
