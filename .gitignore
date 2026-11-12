@@ -1,0 +1,19 @@
+# Build output
+/target/
+
+# Decompiled bytecode and extracted files of the original StoneAge 1.49 (K-S Analysis).
+# Local reverse-engineering reference only – never publish.
+/reference/
+
+# Original StoneAge 1.49 assets (logo, license, translations, colour palettes).
+# Used for local builds when present; public builds use assets/public/ instead.
+/crates/stoneage-core/assets/original/
+
+# Internal reverse-engineering notes of the rebuild (quote the original bytecode).
+/docs/AGENTS.md
+/docs/NOTES-*.md
+
+# Local runtime files
+*.log
+stoneage.lock
+StoneAge.ini

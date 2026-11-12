@@ -1,0 +1,10 @@
+[package]
+name = "stoneage-device"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+libloading.workspace = true
+cpal.workspace = true
+log.workspace = true
+thiserror.workspace = true

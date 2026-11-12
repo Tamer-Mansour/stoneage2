@@ -1,0 +1,23 @@
+[package]
+name = "stoneage-app"
+version.workspace = true
+edition.workspace = true
+
+[[bin]]
+name = "stoneage"
+path = "src/main.rs"
+
+[dependencies]
+stoneage-core.workspace = true
+stoneage-device.workspace = true
+stoneage-plots.workspace = true
+stoneage-spatial.workspace = true
+stoneage-update.workspace = true
+eframe.workspace = true
+egui.workspace = true
+egui_extras.workspace = true
+image.workspace = true
+rfd.workspace = true
+chrono.workspace = true
+log.workspace = true
+serde.workspace = true

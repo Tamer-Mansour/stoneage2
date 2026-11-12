@@ -1,0 +1,12 @@
+[package]
+name = "stoneage-core"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+chrono.workspace = true
+encoding_rs.workspace = true
+thiserror.workspace = true
+log.workspace = true
+image.workspace = true
+zip = { version = "2", default-features = false, features = ["deflate"] }

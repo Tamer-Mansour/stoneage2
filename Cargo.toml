@@ -1,0 +1,40 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/stoneage-core",
+    "crates/stoneage-device",
+    "crates/stoneage-plots",
+    "crates/stoneage-spatial",
+    "crates/stoneage-app",
+    "crates/stoneage-update",
+]
+
+[workspace.package]
+version = "2.0.0"
+edition = "2021"
+
+[workspace.dependencies]
+stoneage-core = { path = "crates/stoneage-core" }
+stoneage-device = { path = "crates/stoneage-device" }
+stoneage-plots = { path = "crates/stoneage-plots" }
+stoneage-spatial = { path = "crates/stoneage-spatial" }
+stoneage-update = { path = "crates/stoneage-update" }
+eframe = { version = "0.37", default-features = false, features = ["glow", "default_fonts", "persistence"] }
+egui = "0.37"
+egui_extras = { version = "0.37", features = ["image", "svg"] }
+image = { version = "0.25", default-features = false, features = ["png", "jpeg", "gif"] }
+rfd = "0.18"
+cpal = "0.18"
+libloading = "0.9"
+chrono = "0.4"
+encoding_rs = "0.8"
+serde = { version = "1", features = ["derive"] }
+thiserror = "2"
+log = "0.4"
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+
+[profile.dev.package."*"]
+opt-level = 2

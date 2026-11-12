@@ -1,0 +1,16 @@
+[package]
+name = "stoneage-update"
+version.workspace = true
+edition.workspace = true
+description = "Self-updater for StoneAge 2: GitHub Releases check, verified download, install and restart"
+
+[dependencies]
+serde.workspace = true
+thiserror.workspace = true
+log.workspace = true
+serde_json = "1"
+semver = "1"
+sha2 = "0.10"
+zip = { version = "2", default-features = false, features = ["deflate"] }
+# Blocking HTTP client with rustls (ring) + bundled webpki roots: no OpenSSL / system TLS needed.
+ureq = { version = "3", default-features = false, features = ["rustls"] }

@@ -1,0 +1,114 @@
+# Builds the Windows packages and publishes a GitHub Release when a version tag is pushed.
+#
+#   git tag v2.1.0 && git push origin v2.1.0
+#
+# Assets (names are what the in-app updater looks for, see crates/stoneage-update):
+#   stoneage-windows-x86.zip   32-bit build (required for the PCSGU250 oscilloscope DLL)
+#   stoneage-windows-x64.zip   64-bit build
+#   SHA256SUMS.txt             sha256sum of both zips (the updater refuses packages without it)
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+env:
+  CARGO_TERM_COLOR: always
+  # Static MSVC runtime: the exe runs without the Visual C++ Redistributable.
+  RUSTFLAGS: "-C target-feature=+crt-static"
+
+jobs:
+  build:
+    name: Build ${{ matrix.arch }}
+    runs-on: windows-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        include:
+          - target: i686-pc-windows-msvc
+            arch: x86
+          - target: x86_64-pc-windows-msvc
+            arch: x64
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: release-${{ matrix.target }}
+
+      - name: Check that the tag matches the Cargo version
+        shell: pwsh
+        run: |
+          $tag = "${{ github.ref_name }}".TrimStart('v', 'V')
+          $meta = cargo metadata --no-deps --format-version 1 | ConvertFrom-Json
+          $ver = ($meta.packages | Where-Object name -eq 'stoneage-app').version
+          if ($tag -ne $ver) {
+            throw "Tag ${{ github.ref_name }} does not match workspace version $ver (Cargo.toml [workspace.package] version)"
+          }
+
+      - name: Build
+        run: cargo build --release --locked -p stoneage-app --target ${{ matrix.target }}
+
+      - name: Package
+        shell: pwsh
+        run: |
+          $name = "stoneage-windows-${{ matrix.arch }}"
+          $dir = "dist/$name"
+          New-Item -ItemType Directory -Force "$dir/licenses" | Out-Null
+          Copy-Item "target/${{ matrix.target }}/release/stoneage.exe" $dir
+          foreach ($f in @('README.md', 'README.txt', 'CHANGELOG.md')) {
+            if (Test-Path $f) { Copy-Item $f $dir }
+          }
+          Get-ChildItem -File -Path . | Where-Object Name -like 'LICENSE*' | Copy-Item -Destination "$dir/licenses"
+          Copy-Item crates/stoneage-app/assets/icons/LICENSE-tlp-icons.txt "$dir/licenses"
+          if (Test-Path crates/stoneage-app/assets/icons/NOTICE-tlp-icons.md) {
+            Copy-Item crates/stoneage-app/assets/icons/NOTICE-tlp-icons.md "$dir/licenses"
+          }
+          Compress-Archive -Path "$dir/*" -DestinationPath "dist/$name.zip" -CompressionLevel Optimal
+          Get-ChildItem dist
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: package-${{ matrix.arch }}
+          path: dist/stoneage-windows-${{ matrix.arch }}.zip
+          if-no-files-found: error
+
+  release:
+    name: Publish release
+    needs: build
+    runs-on: windows-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          pattern: package-*
+          merge-multiple: true
+
+      - name: SHA256SUMS.txt
+        shell: pwsh
+        run: |
+          Set-Location dist
+          $lines = Get-ChildItem -File -Filter 'stoneage-windows-*.zip' | Sort-Object Name | ForEach-Object {
+            "{0}  {1}" -f (Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant(), $_.Name
+          }
+          if ($lines.Count -ne 2) { throw "expected 2 packages, found $($lines.Count)" }
+          [System.IO.File]::WriteAllText("$PWD/SHA256SUMS.txt", (($lines -join "`n") + "`n"))
+          Get-Content SHA256SUMS.txt
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/stoneage-windows-x86.zip
+            dist/stoneage-windows-x64.zip
+            dist/SHA256SUMS.txt
+          # Tags like v2.1.0-beta.1 become pre-releases (only offered with "Include pre-releases").
+          prerelease: ${{ contains(github.ref_name, '-') }}
+          generate_release_notes: true
+          fail_on_unmatched_files: true

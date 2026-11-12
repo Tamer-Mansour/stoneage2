@@ -1,0 +1,10 @@
+[package]
+name = "stoneage-spatial"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+stoneage-core.workspace = true
+stoneage-plots.workspace = true
+egui.workspace = true
+image.workspace = true
