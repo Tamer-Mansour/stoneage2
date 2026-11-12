@@ -17,6 +17,7 @@ pub const EXIT: KeyboardShortcut = KeyboardShortcut::new(Modifiers::COMMAND, Key
 pub const RECORD_DELAYED: KeyboardShortcut = KeyboardShortcut::new(Modifiers::COMMAND, Key::Space);
 pub const RECORD_NEW_ROW: KeyboardShortcut = KeyboardShortcut::new(Modifiers::SHIFT, Key::Space);
 pub const RECORD: KeyboardShortcut = KeyboardShortcut::new(Modifiers::NONE, Key::Space);
+pub const DIAGNOSTICS: KeyboardShortcut = KeyboardShortcut::new(Modifiers::COMMAND.plus(Modifiers::SHIFT), Key::D);
 pub const HELP: KeyboardShortcut = KeyboardShortcut::new(Modifiers::NONE, Key::F1);
 
 const TAB_KEYS: [Key; 7] = [Key::Num1, Key::Num2, Key::Num3, Key::Num4, Key::Num5, Key::Num6, Key::Num7];
@@ -53,6 +54,9 @@ pub fn handle(ctx: &egui::Context, state: &mut AppState) {
         }
         if i.consume_shortcut(&EXIT) {
             cmds.push(Command::Exit);
+        }
+        if i.consume_shortcut(&DIAGNOSTICS) {
+            cmds.push(Command::ExportDiagnostics);
         }
         if i.consume_shortcut(&HELP) {
             cmds.push(Command::ShowSection(SidebarSection::Help));

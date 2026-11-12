@@ -79,6 +79,13 @@ fn file_menu(ui: &mut egui::Ui, st: &mut AppState) {
         ui.separator();
         item(ui, st, "MainFrame.Menu.File.SaveIni.Caption", "Save Defaults", Command::SaveDefaults);
         ui.separator();
+        // Support: logs + crash reports for remote troubleshooting.
+        let diag = t(&st.i18n, "App.Menu.File.Diagnostics", "Diagnostics");
+        ui.menu_button(diag, |ui| {
+            item_sc(ui, st, "App.Menu.File.ExportDiagnostics", "Export diagnostics…", &sc::DIAGNOSTICS, Command::ExportDiagnostics);
+            item(ui, st, "App.Menu.File.OpenLogFolder", "Open log folder", Command::OpenLogFolder);
+        });
+        ui.separator();
         item_sc(ui, st, "MainFrame.Menu.File.Exit.Caption", "Exit", &sc::EXIT, Command::Exit);
     });
 }

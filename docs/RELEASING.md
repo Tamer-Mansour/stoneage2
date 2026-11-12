@@ -75,3 +75,11 @@ the installation unchanged.
 - To test end to end, publish a release with a higher version in a test repository. Set
   `UpdateRepo = you/test-repo` in `StoneAge.ini` next to an older build, then use Check now,
   Download and Install & restart.
+
+## Releasing from this PC (when GitHub Actions is unavailable)
+
+One command builds both binaries without the original assets, tags, pushes and publishes:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\release.ps1 -Version 2.0.2 -Notes "What changed"
+```

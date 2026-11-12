@@ -28,7 +28,7 @@ pub fn error(state: &mut AppState, origin: &str, msg: impl AsRef<str>) {
 }
 
 fn push(state: &mut AppState, level: Level, origin: &str, msg: &str) {
-    log::log!(level, "{origin} : {msg}");
+    // AppState::log also writes the daily log file.
     state.log(level, format!("{origin} : {msg}"));
 }
 

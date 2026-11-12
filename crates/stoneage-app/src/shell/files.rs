@@ -10,6 +10,7 @@ pub enum Kind {
     Saf,
     Csv,
     Image,
+    Text,
 }
 
 impl Kind {
@@ -18,6 +19,7 @@ impl Kind {
             Kind::Saf => &["saf"],
             Kind::Csv => &["csv"],
             Kind::Image => &["jpg", "gif", "png"],
+            Kind::Text => &["txt"],
         }
     }
 
@@ -26,6 +28,7 @@ impl Kind {
             Kind::Saf => ("StoneAgeFileFilter.Description", "StoneAge Files (*.saf)"),
             Kind::Csv => ("CSVFileFilter.Description", "CSV Files (*.csv)"),
             Kind::Image => ("ImageFileFilter.Description", "Images (*.jpg,*.gif,*.png)"),
+            Kind::Text => ("App.Files.TextFilter", "Text files (*.txt)"),
         };
         super::t(i18n, key, fallback)
     }

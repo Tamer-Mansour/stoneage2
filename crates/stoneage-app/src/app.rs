@@ -120,6 +120,19 @@ impl StoneAgeApp {
             .and_then(|s| chrono::DateTime::parse_from_rfc3339(s).ok())
             .map(|d| d.with_timezone(&chrono::Local));
 
+        // A crash since the last start: tell the user how to send the report.
+        let crashes = shell::diagnostics::unseen_crashes();
+        if !crashes.is_empty() {
+            let msg = shell::t(
+                &state.i18n,
+                "App.Toast.CrashLastTime",
+                "StoneAge closed unexpectedly last time. Please send File → Diagnostics → Export diagnostics.",
+            );
+            state.log(log::Level::Warn, format!("{} crash report(s) since last start", crashes.len()));
+            state.toast(format!("⚠ {msg}"));
+            shell::diagnostics::mark_crashes_seen();
+        }
+
         Self {
             state,
             views: Views::default(),

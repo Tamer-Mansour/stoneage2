@@ -198,6 +198,10 @@ pub enum Command {
     SkipVersion,
     /// Open the GitHub releases page in the browser.
     OpenReleasesPage,
+    /// File → Diagnostics → Export diagnostics… (logs, crash reports, device and settings as text).
+    ExportDiagnostics,
+    /// File → Diagnostics → Open log folder.
+    OpenLogFolder,
 }
 
 impl AppState {
@@ -205,7 +209,10 @@ impl AppState {
         self.commands.push(c);
     }
     pub fn log(&mut self, level: log::Level, text: impl Into<String>) {
-        self.log.push(LogEntry { time: chrono::Local::now(), level, text: text.into() });
+        let text = text.into();
+        // Also into the daily log file (shell::diagnostics).
+        log::log!(target: "stoneage::ui", level, "{text}");
+        self.log.push(LogEntry { time: chrono::Local::now(), level, text });
     }
     pub fn toast(&mut self, text: impl Into<String>) {
         self.toasts.push((Instant::now(), text.into()));

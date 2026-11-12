@@ -35,6 +35,8 @@ fn error_toast(state: &mut AppState, text: String) {
 
 impl StoneAgeApp {
     pub fn execute(&mut self, ctx: &egui::Context, cmd: Command) {
+        // Every user action goes to the daily log (File → Diagnostics).
+        log::info!(target: "stoneage::action", "{cmd:?}");
         if discards_document(&cmd) && self.state.dirty && !self.shell.force {
             self.shell.confirm = Some(cmd);
             return;
@@ -129,6 +131,29 @@ impl StoneAgeApp {
                     st.dirty = true;
                 }
             }
+            Command::ExportDiagnostics => {
+                let name = format!(
+                    "stoneage-diagnostics-{}.txt",
+                    chrono::Local::now().format("%Y-%m-%d_%H-%M")
+                );
+                if let Some(p) = files::save(&self.state.i18n, Kind::Text, self.dir(), Some(&name)) {
+                    self.remember_dir(&p);
+                    let st = &mut self.state;
+                    let text = super::diagnostics::report(st);
+                    match std::fs::write(&p, text) {
+                        Ok(()) => {
+                            trace::info(st, MF, format!("Diagnostics exported: {}", p.display()));
+                            let msg = tf(&st.i18n, "App.Toast.DiagnosticsExported", "Diagnostics saved: {0}", &[&p.display()]);
+                            st.toast(msg);
+                        }
+                        Err(e) => {
+                            trace::error(st, MF, format!("Export diagnostics: {e}"));
+                            error_toast(st, e.to_string());
+                        }
+                    }
+                }
+            }
+            Command::OpenLogFolder => super::diagnostics::open_log_folder(),
             Command::ExportImage => {
                 let name = self.suggested_name("png");
                 if let Some(p) = files::save(&self.state.i18n, Kind::Image, self.dir(), Some(&name)) {

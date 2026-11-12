@@ -10,6 +10,7 @@
 
 pub mod central;
 pub mod commands;
+pub mod diagnostics;
 pub mod dialogs;
 pub mod files;
 pub mod icons;

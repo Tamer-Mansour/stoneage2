@@ -11,6 +11,9 @@ mod shell;
 mod state;
 
 fn main() -> eframe::Result<()> {
+    // Daily log file + crash reports (File → Diagnostics).
+    shell::diagnostics::init();
+
     // After a self-update restart: wait for the old process, delete the replaced files.
     stoneage_update::after_restart(&shell::startup::lock_file_path());
 
