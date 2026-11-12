@@ -2433,7 +2433,7 @@ checksum = "a2eb9349b6444b326872e140eb1cf5e7c522154d69e7a0ffb0fb81c06b37543f"
 
 [[package]]
 name = "stoneage-app"
-version = "2.0.0"
+version = "2.0.1"
 dependencies = [
  "chrono",
  "eframe",
@@ -2452,7 +2452,7 @@ dependencies = [
 
 [[package]]
 name = "stoneage-core"
-version = "2.0.0"
+version = "2.0.1"
 dependencies = [
  "chrono",
  "encoding_rs",
@@ -2464,7 +2464,7 @@ dependencies = [
 
 [[package]]
 name = "stoneage-device"
-version = "2.0.0"
+version = "2.0.1"
 dependencies = [
  "cpal",
  "libloading 0.9.0",
@@ -2474,7 +2474,7 @@ dependencies = [
 
 [[package]]
 name = "stoneage-plots"
-version = "2.0.0"
+version = "2.0.1"
 dependencies = [
  "chrono",
  "egui",
@@ -2484,7 +2484,7 @@ dependencies = [
 
 [[package]]
 name = "stoneage-spatial"
-version = "2.0.0"
+version = "2.0.1"
 dependencies = [
  "egui",
  "image",
@@ -2494,7 +2494,7 @@ dependencies = [
 
 [[package]]
 name = "stoneage-update"
-version = "2.0.0"
+version = "2.0.1"
 dependencies = [
  "log",
  "semver",
